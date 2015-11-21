@@ -14,6 +14,7 @@ public class DecisionTree {
     }
 
     void iterate(String[] row, Node n, int column) {
+
         if (row[266].equals("RESISTANT")) {
             n.RESISTANT_counter++;
         }
@@ -77,13 +78,13 @@ public class DecisionTree {
         }
     }
 
-    double calculateEntropy(double a, double b) {
+    public static double calculateEntropy(double a, double b) {
         double frac1 = a / (a + b);
         double frac2 = b / (a + b);
         return - frac1 * log_base2(frac1) - frac2 * log_base2(frac2);
     }
 
-    double log_base2(double n) {
+    public static double log_base2(double n) {
         return Math.log(n) / Math.log(2);
     }
 
