@@ -84,6 +84,14 @@ public class DecisionTree {
         return - frac1 * log_base2(frac1) - frac2 * log_base2(frac2);
     }
 
+    public static double calculateEntropy(Node n) {
+        double a = n.RESISTANT_counter;
+        double b = n.COMPLETE_REMISSION_counter;
+        double frac1 = a / (a + b);
+        double frac2 = b / (a + b);
+        return - frac1 * log_base2(frac1) - frac2 * log_base2(frac2);
+    }
+
     public static double log_base2(double n) {
         return Math.log(n) / Math.log(2);
     }
