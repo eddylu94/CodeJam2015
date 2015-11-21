@@ -62,7 +62,7 @@ public class DecisionTree {
             + "   " + calculateEntropy(n.RESISTANT_counter, n.COMPLETE_REMISSION_counter));
 
         // stop printing to reduce execution time during testing
-        if (level == 10) {
+        if (level == 8) {
             return;
         }
 

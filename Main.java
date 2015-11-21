@@ -24,14 +24,39 @@ public class Main {
         printData();
 
         DecisionTree decisionTree = new DecisionTree();
-        for (int i = 1; i < numRows; i++) {
+//        for (int i = 1; i < numRows; i++) {
+        for (int i = 1; i < 80; i++) {
             String[] row = new String[numColumns];
             for (int j = 0; j < numColumns; j++) {
                 row[j] = data[i][j];
             }
             decisionTree.addRow(row);
+            System.out.println("Trained: " + row[0]);
         }
         decisionTree.printTree();
+
+        for (int current_row_index = 80; current_row_index < 150; current_row_index++) {
+            classifyRow(current_row_index, decisionTree);
+        }
+
+    }
+
+    public static void classifyRow(int current_row_index, DecisionTree decisionTree) {
+        String[] current_row = new String[numColumns - 3];
+        for (int a = 0; a < numColumns - 3; a++) {
+            current_row[a] = data[current_row_index][a];
+        }
+        Classifier classifier = new Classifier(current_row, numColumns, decisionTree.tree);
+
+        System.out.println("Classified0 Result for " + data[current_row_index][0] + ": " + classifier.getClassified0_result());
+        System.out.println("Actual Value0 for " + data[current_row_index][0] + ": " + data[current_row_index][266]);
+
+        String theoretical = classifier.getClassified0_result();
+        String actual = data[current_row_index][266];
+        boolean correct = theoretical.equals(actual);
+
+        System.out.println("Classifying for " + data[current_row_index][0] + ": " + correct);
+        System.out.println();
     }
 
     public static void parse() throws IOException {

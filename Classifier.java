@@ -20,11 +20,12 @@ public class Classifier {
         row = inputRow;
         numColumns = columns;
         trained_decisionTree = tree;
+
+        classify(row);
     }
 
-    public static String classify(String[] row) {
+    public static void classify(String[] row) {
         classify_iterateNextNode(row, trained_decisionTree, 1);
-        return classified0_result;
     }
 
     public static void classify_iterateNextNode(String[] row, Node n, int column) {
@@ -39,12 +40,14 @@ public class Classifier {
             if (row[column].equals("0")) {
                 if (n.ifLeftPresent() == false) {
                     determineResult();
+                    return;
                 }
                 classify_iterateNextNode(row, n.left, column + 1);
             }
             else if (row[column].equals("1")) {
                 if (n.ifRightPresent() == false) {
                     determineResult();
+                    return;
                 }
                 classify_iterateNextNode(row, n.right, column + 1);
             }
@@ -66,6 +69,10 @@ public class Classifier {
         Collections.sort(visited_entropies);
         double highestEntropy = visited_entropies.get(0);
         classified0_result = entropy_and_classifiedString.get(highestEntropy);
+    }
+
+    public static String getClassified0_result() {
+        return classified0_result;
     }
 
 }
