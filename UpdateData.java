@@ -1,4 +1,4 @@
-package com.company;
+package com.eddylu;
 
 import java.util.ArrayList;
 import java.util.Collections;
