@@ -8,15 +8,15 @@ public class Node {
     Node left;
     Node right;
 
-    public boolean ifLeftPresent(Node n) {
-        if (n.left == null) {
+    public boolean ifLeftPresent() {
+        if (this.left == null) {
             return false;
         }
         return true;
     }
 
-    public boolean ifRightPresent(Node n) {
-        if (n.right == null) {
+    public boolean ifRightPresent() {
+        if (this.right == null) {
             return false;
         }
         return true;

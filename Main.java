@@ -22,8 +22,17 @@ public class Main {
 
         UpdateData updateData = new UpdateData(data, numRows, numColumns);
         data = updateData.update();
-
         printData();
+
+        DecisionTree decisionTree = new DecisionTree();
+        for (int i = 1; i < numRows; i++) {
+            String[] row = new String[numColumns];
+            for (int j = 0; j < numColumns; j++) {
+                row[j] = data[i][j];
+            }
+            decisionTree.addRow(row);
+        }
+        decisionTree.printTree();
     }
 
     public static void parse() throws IOException {
