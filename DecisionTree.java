@@ -48,6 +48,7 @@ public class DecisionTree {
     void printTree() {
         Node n = tree;
         System.out.println("Printing tree:");
+        System.out.println();
         printLevel(n, 0);
         System.out.println();
     }
@@ -56,10 +57,11 @@ public class DecisionTree {
         for (int i = 0; i < level; i++) {
             System.out.print("---");
         }
-        System.out.println(n.RESISTANT_counter + "," + n.COMPLETE_REMISSION_counter);
+        System.out.println(n.RESISTANT_counter + "," + n.COMPLETE_REMISSION_counter
+            + "   " + calculateEntropy(n.RESISTANT_counter, n.COMPLETE_REMISSION_counter));
 
         // stop printing to reduce execution time during testing
-        if (level == 30) {
+        if (level == 10) {
             return;
         }
 
@@ -73,6 +75,16 @@ public class DecisionTree {
         else if (n.ifLeftPresent() == false && n.ifRightPresent()) {
             printLevel(n.right, level + 1);
         }
+    }
+
+    double calculateEntropy(double a, double b) {
+        double frac1 = a / (a + b);
+        double frac2 = b / (a + b);
+        return - frac1 * log_base2(frac1) - frac2 * log_base2(frac2);
+    }
+
+    double log_base2(double n) {
+        return Math.log(n) / Math.log(2);
     }
 
 }
