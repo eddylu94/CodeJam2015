@@ -1,8 +1,6 @@
 package com.eddylu;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 public class Main {
 
@@ -24,7 +22,7 @@ public class Main {
 
         UpdateData updateData = new UpdateData(data, numRows, numColumns);
         data = updateData.update();
-        printData();
+//        printData();
 
         DecisionTree decisionTree = new DecisionTree();
 //        for (int i = 1; i < numRows; i++) {
@@ -36,6 +34,8 @@ public class Main {
             decisionTree.addRow(row);
         }
 //        decisionTree.printTree();
+
+        clearOutput();
 
         TestDecisionTree[] testDecisionTrees = new TestDecisionTree[numColumns - 3];
         for (int t = 1; t < testDecisionTrees.length; t++) {
@@ -50,13 +50,10 @@ public class Main {
                 testDecisionTrees[t].test_addRow(testRow);
             }
         }
-        testDecisionTrees[1].test_printPartialTree(3, 1);
-        testDecisionTrees[2].test_printPartialTree(3, 2);
-        testDecisionTrees[3].test_printPartialTree(3, 3);
 
-//        for (int p = 1; p < numColumns - 3; p++) {
-//            testDecisionTrees[p].printPartialTree(1);
-//        }
+        for (int p = 1; p < numColumns - 3; p++) {
+            testDecisionTrees[p].test_printPartialTree(2, p);
+        }
 
 //        for (int current_row_index = 100; current_row_index < numRows - 1; current_row_index++) {
 //            classifyRow(current_row_index, decisionTree);
@@ -138,5 +135,19 @@ public class Main {
             System.out.println();
         }
         System.out.println();
+    }
+
+    public static void clearOutput() {
+        try {
+            BufferedWriter out = new BufferedWriter(
+                    new FileWriter("gainScores_level0.txt"));
+
+            out.write("");
+
+            out.close();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -10,8 +10,6 @@ public class TestDecisionTree {
 
     public TestDecisionTree() {
         tree = new Node();
-        System.out.println();
-        System.out.println();
     }
 
     void test_addRow(String[] row) {
@@ -36,7 +34,6 @@ public class TestDecisionTree {
     void iterateNextNode(String[] row, Node n, int column) {
         if (column < 5) {
             if (row[column].equals("0")) {
-                System.out.println(0);
                 if (n.ifLeftPresent() == false) {
                     Node newNode = new Node();
                     n.addLeftNode(newNode);
@@ -44,7 +41,6 @@ public class TestDecisionTree {
                 iterate(row, n.left, column + 1);
             }
             else if (row[column].equals("1")) {
-                System.out.println(1);
                 if (n.ifRightPresent() == false) {
                     Node newNode = new Node();
                     n.addRightNode(newNode);
@@ -63,6 +59,7 @@ public class TestDecisionTree {
     }
 
     void printPartialTreeLevel(Node n, int level, int limit, int column_assignment) {
+
         if (level < limit) {
             for (int i = 0; i < level; i++) {
                 System.out.print("---");
@@ -76,17 +73,26 @@ public class TestDecisionTree {
                 return;
             }
 
-            System.out.printf("   %.0f", calculateGainScore(calculateGain(n, n.left, n.right)));
+            double current_gainScore = calculateGainScore(calculateGain(n, n.left, n.right));
+            System.out.printf("   %.0f", current_gainScore);
 
-            try {
-                BufferedWriter writer = new BufferedWriter(
-                        new FileWriter("gainSores_level0.txt"));
+            if (level == 0) {
+                try {
 
-                writer.write(column_assignment + " "
-                        + (int)calculateGainScore(calculateGain(n, n.left, n.right)));
-            }
-            catch (IOException e) {
-                e.printStackTrace();
+                    BufferedWriter out = new BufferedWriter(
+                            new FileWriter("gainScores_level0.txt", true));
+
+                    String output = column_assignment + " "
+                            + (int)current_gainScore;
+
+                    out.append(output);
+                    out.newLine();
+
+                    out.close();
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
             System.out.println();
