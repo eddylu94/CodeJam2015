@@ -1,24 +1,30 @@
 package com.eddylu;
 
-public class DecisionTree {
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
+public class TestDecisionTree {
 
     Node tree;
 
-    public DecisionTree() {
+    public TestDecisionTree() {
         tree = new Node();
+        System.out.println();
+        System.out.println();
     }
 
-    void addRow(String[] row) {
+    void test_addRow(String[] row) {
         Node n = tree;
         iterate(row, n, 1);
     }
 
     void iterate(String[] row, Node n, int column) {
 
-        if (row[266].equals("RESISTANT")) {
+        if (row[2].equals("RESISTANT")) {
             n.RESISTANT_counter++;
         }
-        else if (row[266].equals("COMPLETE_REMISSION")) {
+        else if (row[2].equals("COMPLETE_REMISSION")) {
             n.COMPLETE_REMISSION_counter++;
         }
         else {
@@ -28,8 +34,9 @@ public class DecisionTree {
     }
 
     void iterateNextNode(String[] row, Node n, int column) {
-        if (column < 266) {
+        if (column < 5) {
             if (row[column].equals("0")) {
+                System.out.println(0);
                 if (n.ifLeftPresent() == false) {
                     Node newNode = new Node();
                     n.addLeftNode(newNode);
@@ -37,6 +44,7 @@ public class DecisionTree {
                 iterate(row, n.left, column + 1);
             }
             else if (row[column].equals("1")) {
+                System.out.println(1);
                 if (n.ifRightPresent() == false) {
                     Node newNode = new Node();
                     n.addRightNode(newNode);
@@ -46,15 +54,15 @@ public class DecisionTree {
         }
     }
 
-    void printPartialTree(int limit) {
+    void test_printPartialTree(int limit, int column_assignment) {
         Node n = tree;
         System.out.println("Printing tree:");
         System.out.println();
-        printPartialTreeLevel(n, 0, limit);
+        printPartialTreeLevel(n, 0, limit, column_assignment);
         System.out.println();
     }
 
-    void printPartialTreeLevel(Node n, int level, int limit) {
+    void printPartialTreeLevel(Node n, int level, int limit, int column_assignment) {
         if (level < limit) {
             for (int i = 0; i < level; i++) {
                 System.out.print("---");
@@ -69,17 +77,29 @@ public class DecisionTree {
             }
 
             System.out.printf("   %.0f", calculateGainScore(calculateGain(n, n.left, n.right)));
+
+            try {
+                BufferedWriter writer = new BufferedWriter(
+                        new FileWriter("gainSores_level0.txt"));
+
+                writer.write(column_assignment + " "
+                        + (int)calculateGainScore(calculateGain(n, n.left, n.right)));
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+
             System.out.println();
 
             if (n.ifLeftPresent() && n.ifRightPresent()) {
-                printPartialTreeLevel(n.left, level + 1, limit);
-                printPartialTreeLevel(n.right, level + 1, limit);
+                printPartialTreeLevel(n.left, level + 1, limit, column_assignment);
+                printPartialTreeLevel(n.right, level + 1, limit, column_assignment);
             }
             else if (n.ifLeftPresent() && n.ifRightPresent() == false) {
-                printPartialTreeLevel(n.left, level + 1, limit);
+                printPartialTreeLevel(n.left, level + 1, limit, column_assignment);
             }
             else if (n.ifLeftPresent() == false && n.ifRightPresent()) {
-                printPartialTreeLevel(n.right, level + 1, limit);
+                printPartialTreeLevel(n.right, level + 1, limit, column_assignment);
             }
         }
     }

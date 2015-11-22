@@ -20,7 +20,7 @@ public class Main {
 
         data = new String[numRows][numColumns];
         parse();
-        printData();
+//        printData();
 
         UpdateData updateData = new UpdateData(data, numRows, numColumns);
         data = updateData.update();
@@ -28,23 +28,44 @@ public class Main {
 
         DecisionTree decisionTree = new DecisionTree();
 //        for (int i = 1; i < numRows; i++) {
-        for (int i = 1; i < 100; i++) {
+        for (int i = 1; i < numRows; i++) {
             String[] row = new String[numColumns];
             for (int j = 0; j < numColumns; j++) {
                 row[j] = data[i][j];
             }
             decisionTree.addRow(row);
         }
-        decisionTree.printTree();
+//        decisionTree.printTree();
 
-        for (int current_row_index = 100; current_row_index < numRows - 1; current_row_index++) {
-            classifyRow(current_row_index, decisionTree);
+        TestDecisionTree[] testDecisionTrees = new TestDecisionTree[numColumns - 3];
+        for (int t = 1; t < testDecisionTrees.length; t++) {
+            testDecisionTrees[t] = new TestDecisionTree();
+            for (int i = 1; i < numRows; i++) {
+                String[] testRow = new String[5];
+                testRow[0] = data[i][0];
+                testRow[1] = data[i][t];
+                testRow[2] = data[i][numColumns - 3];
+                testRow[3] = data[i][numColumns - 2];
+                testRow[4] = data[i][numColumns - 1];
+                testDecisionTrees[t].test_addRow(testRow);
+            }
         }
+        testDecisionTrees[1].test_printPartialTree(3, 1);
+        testDecisionTrees[2].test_printPartialTree(3, 2);
+        testDecisionTrees[3].test_printPartialTree(3, 3);
+
+//        for (int p = 1; p < numColumns - 3; p++) {
+//            testDecisionTrees[p].printPartialTree(1);
+//        }
+
+//        for (int current_row_index = 100; current_row_index < numRows - 1; current_row_index++) {
+//            classifyRow(current_row_index, decisionTree);
+//        }
 
         System.out.println("Correct responses: " + correctResponses);
         System.out.println("Incorrect responses: " + incorrectResponses);
         System.out.printf("Classifier accuracy: %.2f %%",
-                (double)correctResponses / (double)(correctResponses + incorrectResponses) * 100);
+                (double) correctResponses / (double) (correctResponses + incorrectResponses) * 100);
         System.out.println();
     }
 
