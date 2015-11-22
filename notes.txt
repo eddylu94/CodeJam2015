@@ -1,3 +1,11 @@
 column 183 produces largest gain from level0 with a gain score of 63394
 
-column 30 produces largest gain from level1 with a mean gain score of 63559
+column 30 produces largest gain from level1 with a mean (2 values each) gain score of 63559
+
+column 34 produces largest gain from level2 with a mean (4 values each) gain score of 91643.25
+
+column 217 produces largest gain from level3 with a mean (8 values each) gain score of 84890
+
+column 102 produces largest gain from level4 with a mean (16 values each) gain score of 134095.1
+
+column 162 produces largest gain from level5 with a mean (32 values each) gain score of 196658.3
