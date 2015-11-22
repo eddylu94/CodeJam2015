@@ -19,10 +19,10 @@ public class TestDecisionTree {
 
     void iterate(String[] row, Node n, int column) {
 
-        if (row[2].equals("RESISTANT")) {
+        if (row[3].equals("RESISTANT")) {
             n.RESISTANT_counter++;
         }
-        else if (row[2].equals("COMPLETE_REMISSION")) {
+        else if (row[3].equals("COMPLETE_REMISSION")) {
             n.COMPLETE_REMISSION_counter++;
         }
         else {

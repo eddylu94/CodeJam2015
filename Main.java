@@ -24,35 +24,40 @@ public class Main {
         data = updateData.update();
 //        printData();
 
-        DecisionTree decisionTree = new DecisionTree();
+//        DecisionTree decisionTree = new DecisionTree();
 //        for (int i = 1; i < numRows; i++) {
-        for (int i = 1; i < numRows; i++) {
-            String[] row = new String[numColumns];
-            for (int j = 0; j < numColumns; j++) {
-                row[j] = data[i][j];
-            }
-            decisionTree.addRow(row);
-        }
+//        for (int i = 1; i < numRows; i++) {
+//            String[] row = new String[numColumns];
+//            for (int j = 0; j < numColumns; j++) {
+//                row[j] = data[i][j];
+//            }
+//            decisionTree.addRow(row);
+//        }
 //        decisionTree.printTree();
 
         clearOutput();
 
         TestDecisionTree[] testDecisionTrees = new TestDecisionTree[numColumns - 3];
         for (int t = 1; t < testDecisionTrees.length; t++) {
-            testDecisionTrees[t] = new TestDecisionTree();
-            for (int i = 1; i < numRows; i++) {
-                String[] testRow = new String[5];
-                testRow[0] = data[i][0];
-                testRow[1] = data[i][t];
-                testRow[2] = data[i][numColumns - 3];
-                testRow[3] = data[i][numColumns - 2];
-                testRow[4] = data[i][numColumns - 1];
-                testDecisionTrees[t].test_addRow(testRow);
+            if (t != 183) {
+                testDecisionTrees[t] = new TestDecisionTree();
+                for (int i = 1; i < numRows; i++) {
+                    String[] testRow = new String[6];
+                    testRow[0] = data[i][0];
+                    testRow[1] = data[i][183];
+                    testRow[2] = data[i][t];
+                    testRow[3] = data[i][numColumns - 3];
+                    testRow[4] = data[i][numColumns - 2];
+                    testRow[5] = data[i][numColumns - 1];
+                    testDecisionTrees[t].test_addRow(testRow);
+                }
             }
         }
 
         for (int p = 1; p < numColumns - 3; p++) {
-            testDecisionTrees[p].test_printPartialTree(2, p);
+            if (p != 183) {
+                testDecisionTrees[p].test_printPartialTree(3, p);
+            }
         }
 
 //        for (int current_row_index = 100; current_row_index < numRows - 1; current_row_index++) {
