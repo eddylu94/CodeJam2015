@@ -10,7 +10,7 @@ public class DecisionTree {
 
     void addRow(String[] row) {
         Node n = tree;
-        iterate(row, n, 1);
+        iterate(row, n, 183);
     }
 
     void iterate(String[] row, Node n, int column) {
@@ -34,14 +34,14 @@ public class DecisionTree {
                     Node newNode = new Node();
                     n.addLeftNode(newNode);
                 }
-                iterate(row, n.left, column + 1);
+                iterate(row, n.left, nextColumn(column));
             }
             else if (row[column].equals("1")) {
                 if (n.ifRightPresent() == false) {
                     Node newNode = new Node();
                     n.addRightNode(newNode);
                 }
-                iterate(row, n.right, column + 1);
+                iterate(row, n.right, nextColumn(column));
             }
         }
     }
@@ -173,6 +173,30 @@ public class DecisionTree {
 
     public static double log_base2(double n) {
         return Math.log(n) / Math.log(2);
+    }
+
+    public static int nextColumn(int n) {
+        if (n == 183) {
+            return 30;
+        }
+        else if (n == 30) {
+            return 34;
+        }
+        else if (n == 34) {
+            return 217;
+        }
+        else if (n == 217) {
+            return 102;
+        }
+        else if (n == 102) {
+            return 1;
+        }
+        else if (n == 182 || n == 29 || n == 33 || n == 216 || n == 101) {
+            return n + 2;
+        }
+        else {
+            return n + 1;
+        }
     }
 
 }

@@ -24,45 +24,54 @@ public class Main {
         data = updateData.update();
 //        printData();
 
-//        DecisionTree decisionTree = new DecisionTree();
+        DecisionTree decisionTree = new DecisionTree();
 //        for (int i = 1; i < numRows; i++) {
-//        for (int i = 1; i < numRows; i++) {
-//            String[] row = new String[numColumns];
-//            for (int j = 0; j < numColumns; j++) {
-//                row[j] = data[i][j];
-//            }
-//            decisionTree.addRow(row);
-//        }
+        for (int i = 1; i < 135; i++) {
+            String[] row = new String[numColumns];
+            for (int j = 0; j < numColumns; j++) {
+                row[j] = data[i][j];
+            }
+            decisionTree.addRow(row);
+        }
 //        decisionTree.printTree();
+        decisionTree.printPartialTree(5);
 
-        clearOutput();
-
-        TestDecisionTree[] testDecisionTrees = new TestDecisionTree[numColumns - 3];
-        for (int t = 1; t < testDecisionTrees.length; t++) {
-            if (t != 183) {
-                testDecisionTrees[t] = new TestDecisionTree();
-                for (int i = 1; i < numRows; i++) {
-                    String[] testRow = new String[6];
-                    testRow[0] = data[i][0];
-                    testRow[1] = data[i][183];
-                    testRow[2] = data[i][t];
-                    testRow[3] = data[i][numColumns - 3];
-                    testRow[4] = data[i][numColumns - 2];
-                    testRow[5] = data[i][numColumns - 1];
-                    testDecisionTrees[t].test_addRow(testRow);
-                }
-            }
-        }
-
-        for (int p = 1; p < numColumns - 3; p++) {
-            if (p != 183) {
-                testDecisionTrees[p].test_printPartialTree(3, p);
-            }
-        }
-
-//        for (int current_row_index = 100; current_row_index < numRows - 1; current_row_index++) {
-//            classifyRow(current_row_index, decisionTree);
+//        /*
+//        For testing gain scores for top levels
+//         */
+//
+//        clearOutput();
+//
+//        TestDecisionTree[] testDecisionTrees = new TestDecisionTree[numColumns - 3];
+//        for (int t = 1; t < testDecisionTrees.length; t++) {
+//            if (t != 183 && t != 30 && t != 34 && t != 217 && t != 102) {
+//                testDecisionTrees[t] = new TestDecisionTree();
+//                for (int i = 1; i < numRows; i++) {
+//                    String[] testRow = new String[10];
+//                    testRow[0] = data[i][0];
+//                    testRow[1] = data[i][183];
+//                    testRow[2] = data[i][30];
+//                    testRow[3] = data[i][34];
+//                    testRow[4] = data[i][217];
+//                    testRow[5] = data[i][102];
+//                    testRow[6] = data[i][t];
+//                    testRow[7] = data[i][numColumns - 3];
+//                    testRow[8] = data[i][numColumns - 2];
+//                    testRow[9] = data[i][numColumns - 1];
+//                    testDecisionTrees[t].test_addRow(testRow);
+//                }
+//            }
 //        }
+//
+//        for (int p = 1; p < numColumns - 3; p++) {
+//            if (p != 183 && p != 30 && p != 34 && p != 217 && p != 102) {
+//                testDecisionTrees[p].test_printPartialTree(6, p);
+//            }
+//        }
+
+        for (int current_row_index = 135; current_row_index < 160; current_row_index++) {
+            classifyRow(current_row_index, decisionTree);
+        }
 
         System.out.println("Correct responses: " + correctResponses);
         System.out.println("Incorrect responses: " + incorrectResponses);
@@ -80,6 +89,7 @@ public class Main {
 
         System.out.println("Classified0 Result for " + data[current_row_index][0] + ": " + classifier.getClassified0_result());
         System.out.println("Actual Value0 for " + data[current_row_index][0] + ": " + data[current_row_index][266]);
+        System.out.println();
 
         String theoretical = classifier.getClassified0_result();
         String actual = data[current_row_index][266];
@@ -92,8 +102,8 @@ public class Main {
             incorrectResponses++;
         }
 
-        System.out.println("Classifying for " + data[current_row_index][0] + ": " + correct);
-        System.out.println();
+//        System.out.println("Classifying for " + data[current_row_index][0] + ": " + correct);
+//        System.out.println();
     }
 
     public static void parse() throws IOException {
@@ -145,7 +155,7 @@ public class Main {
     public static void clearOutput() {
         try {
             BufferedWriter out = new BufferedWriter(
-                    new FileWriter("gainScores_level1.txt"));
+                    new FileWriter("gainScores_level5.txt"));
 
             out.write("");
 

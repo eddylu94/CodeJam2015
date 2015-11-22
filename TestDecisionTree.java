@@ -19,10 +19,10 @@ public class TestDecisionTree {
 
     void iterate(String[] row, Node n, int column) {
 
-        if (row[3].equals("RESISTANT")) {
+        if (row[7].equals("RESISTANT")) {
             n.RESISTANT_counter++;
         }
-        else if (row[3].equals("COMPLETE_REMISSION")) {
+        else if (row[7].equals("COMPLETE_REMISSION")) {
             n.COMPLETE_REMISSION_counter++;
         }
         else {
@@ -32,7 +32,7 @@ public class TestDecisionTree {
     }
 
     void iterateNextNode(String[] row, Node n, int column) {
-        if (column < 5) {
+        if (column < 9) {
             if (row[column].equals("0")) {
                 if (n.ifLeftPresent() == false) {
                     Node newNode = new Node();
@@ -76,11 +76,11 @@ public class TestDecisionTree {
             double current_gainScore = calculateGainScore(calculateGain(n, n.left, n.right));
             System.out.printf("   %.0f", current_gainScore);
 
-            if (level == 1) {
+            if (level == 5) {
                 try {
 
                     BufferedWriter out = new BufferedWriter(
-                            new FileWriter("gainScores_level1.txt", true));
+                            new FileWriter("gainScores_level5.txt", true));
 
                     String output = column_assignment + " "
                             + (int)current_gainScore;

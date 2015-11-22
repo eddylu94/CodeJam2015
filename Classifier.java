@@ -29,7 +29,7 @@ public class Classifier {
     }
 
     public static void classify(String[] row) {
-        classify_iterateNextNode(row, trained_decisionTree, 1);
+        classify_iterateNextNode(row, trained_decisionTree, 183);
     }
 
     public static void classify_iterateNextNode(String[] row, Node n, int column) {
@@ -52,19 +52,19 @@ public class Classifier {
 
             if (row[column].equals("0")) {
                 if (n.ifLeftPresent() == false
-                        || (n.RESISTANT_counter + n.COMPLETE_REMISSION_counter) < 10) {
+                        || (n.RESISTANT_counter + n.COMPLETE_REMISSION_counter) < 2) {
                     determineResult(n);
                     return;
                 }
-                classify_iterateNextNode(row, n.left, column + 1);
+                classify_iterateNextNode(row, n.left, nextColumn(column));
             }
             else if (row[column].equals("1")) {
                 if (n.ifRightPresent() == false
-                        || (n.RESISTANT_counter + n.COMPLETE_REMISSION_counter) < 10) {
+                        || (n.RESISTANT_counter + n.COMPLETE_REMISSION_counter) < 2) {
                     determineResult(n);
                     return;
                 }
-                classify_iterateNextNode(row, n.right, column + 1);
+                classify_iterateNextNode(row, n.right, nextColumn(column));
             }
         }
     }
@@ -129,19 +129,46 @@ public class Classifier {
 //        double lowestEntropy = visited_entropies.get(0);
 //        System.out.println(lowestEntropy);
 //        classified0_result = entropy_and_classifiedString.get(lowestEntropy);
-
+//
 //        Collections.sort(visited_gainScores);
 //        double highestGain = visited_gainScores.get(visited_gainScores.size() - 1);
 //        System.out.printf("%.0f", highestGain);
 //        System.out.println();
 //        classified0_result = gainScore_and_classifiedString.get(highestGain);
+//
+        classified0_result = checkHighestFrequency(n);
 
-//        classified0_result = checkHighestFrequency(n);
+//        double mostRecent = visited_entropies.get(visited_entropies.size() - 2);
+//        classified0_result = entropy_and_classifiedString.get(mostRecent);
 
     }
 
     public static String getClassified0_result() {
         return classified0_result;
+    }
+
+    public static int nextColumn(int n) {
+        if (n == 183) {
+            return 30;
+        }
+        else if (n == 30) {
+            return 34;
+        }
+        else if (n == 34) {
+            return 217;
+        }
+        else if (n == 217) {
+            return 102;
+        }
+        else if (n == 102) {
+            return 1;
+        }
+        else if (n == 182 || n == 29 || n == 33 || n == 216 || n == 101) {
+            return n + 2;
+        }
+        else {
+            return n + 1;
+        }
     }
 
 }
