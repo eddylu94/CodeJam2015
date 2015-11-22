@@ -51,16 +51,14 @@ public class Classifier {
             visited_gainScores.add(current_gainScore);
 
             if (row[column].equals("0")) {
-                if (n.ifLeftPresent() == false
-                        || (n.RESISTANT_counter + n.COMPLETE_REMISSION_counter) < 2) {
+                if (n.ifLeftPresent() == false) {
                     determineResult(n);
                     return;
                 }
                 classify_iterateNextNode(row, n.left, nextColumn(column));
             }
             else if (row[column].equals("1")) {
-                if (n.ifRightPresent() == false
-                        || (n.RESISTANT_counter + n.COMPLETE_REMISSION_counter) < 2) {
+                if (n.ifRightPresent() == false) {
                     determineResult(n);
                     return;
                 }

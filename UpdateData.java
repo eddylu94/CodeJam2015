@@ -18,27 +18,35 @@ public class UpdateData {
 
     public static String[][] update() {
 
-        updateMaleFemale(1);
-        updateDecimalColumn(2);
-        updateDecimalColumn(3);
-        updateYesNo(4);
-        updateYesNo(5);
-        updateYesNo(6);
-        updateYesNo(7);
-        updateNegPos(8);
-        updateNegPos(9);
-        updateNegPos(10);
-        updateChemoSimplest(11);
+        int rowStart_index;
+        if (data[0][0].charAt(0) == '#') {
+            rowStart_index = 1;
+        }
+        else {
+            rowStart_index = 0;
+        }
+
+        updateMaleFemale(1, rowStart_index);
+        updateDecimalColumn(2, rowStart_index);
+        updateDecimalColumn(3, rowStart_index);
+        updateYesNo(4, rowStart_index);
+        updateYesNo(5, rowStart_index);
+        updateYesNo(6, rowStart_index);
+        updateYesNo(7, rowStart_index);
+        updateNegPos(8, rowStart_index);
+        updateNegPos(9, rowStart_index);
+        updateNegPos(10, rowStart_index);
+        updateChemoSimplest(11, rowStart_index);
 
         for (int i = 12; i < numColumns - 3; i++) {
-            updateDecimalColumn(i);
+            updateDecimalColumn(i, rowStart_index);
         }
 
         return data;
     }
 
-    public static void updateMaleFemale(int column) {
-        for (int i = 1; i < numRows; i++) {
+    public static void updateMaleFemale(int column, int rowStart_index) {
+        for (int i = rowStart_index; i < numRows; i++) {
             if (data[i][column].equals("F")) {
                 data[i][column] = "0";
             }
@@ -48,8 +56,8 @@ public class UpdateData {
         }
     }
 
-    public static void updateYesNo(int column) {
-        for (int i = 1; i < numRows; i++) {
+    public static void updateYesNo(int column, int rowStart_index) {
+        for (int i = rowStart_index; i < numRows; i++) {
             if (data[i][column].toUpperCase().equals("NO")) {
                 data[i][column] = "0";
             }
@@ -59,8 +67,8 @@ public class UpdateData {
         }
     }
 
-    public static void updateNegPos(int column) {
-        for (int i = 1; i < numRows; i++) {
+    public static void updateNegPos(int column, int rowStart_index) {
+        for (int i = rowStart_index; i < numRows; i++) {
             if (data[i][column].equals("NEG")) {
                 data[i][column] = "0";
             }
@@ -70,8 +78,9 @@ public class UpdateData {
         }
     }
 
-    public static void updateChemoSimplest(int column) {
-        for (int i = 1; i < numRows; i++) {
+    public static void updateChemoSimplest(int column, int rowStart_index) {
+
+        for (int i = rowStart_index; i < numRows; i++) {
             if (data[i][column].equals("Anthra-HDAC")) {
                 data[i][column] = "0";
             }
@@ -81,11 +90,11 @@ public class UpdateData {
         }
     }
 
-    public static void updateDecimalColumn(int column) {
+    public static void updateDecimalColumn(int column, int rowStart_index) {
 
         ArrayList<Double> numbers = new ArrayList<Double>();
 
-        for (int i = 1; i < numRows; i++) {
+        for (int i = rowStart_index; i < numRows; i++) {
             if (isNumber(data[i][column])) {
                 numbers.add(Double.parseDouble(data[i][column]));
             }
@@ -93,7 +102,7 @@ public class UpdateData {
 
         double median = findMedian(numbers);
 
-        for (int i = 1; i < numRows; i++) {
+        for (int i = rowStart_index; i < numRows; i++) {
             if (isNumber(data[i][column])) {
                 if (Double.parseDouble(data[i][column]) <= median) {
                     data[i][column] = "0";
@@ -131,10 +140,10 @@ public class UpdateData {
         return true;
     }
 
-    public static void ChemoSimplest_statistics() {
+    public static void ChemoSimplest_statistics(int rowStart_index) {
         HashMap<String, Integer> values = new HashMap<String, Integer>();
         ArrayList<String> visited = new ArrayList<String>();
-        for (int i = 1; i < numRows; i++) {
+        for (int i = rowStart_index; i < numRows; i++) {
             if (values.containsKey(data[i][11])) {
                 values.put(data[i][11], values.get(data[i][11]) + 1);
             }

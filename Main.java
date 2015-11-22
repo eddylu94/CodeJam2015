@@ -15,34 +15,36 @@ public class Main {
     private static int numRows_testSet;
     private static int numColumns_testSet;
 
+    private static String inputPath;
+
     public static void main(String[] args) throws IOException {
         numRows = countRows();
         numColumns = countColumns();
         System.out.println();
 
-        numRows_testSet = countRows_testSet();
-        numColumns_testSet = countColumns_testSet();
-        System.out.println();
-
-        data = new String[numRows][numColumns];
+         data = new String[numRows][numColumns];
         parse();
 //        printData();
-
-        data_testSet = new String[numRows][numColumns];
-        parse_testSet();
-//        printData_testSet();
 
         UpdateData updateData = new UpdateData(data, numRows, numColumns);
         data = updateData.update();
 //        printData();
 
+        numRows_testSet = countRows_testSet();
+        numColumns_testSet = countColumns_testSet();
+        System.out.println();
+
+        data_testSet = new String[numRows][numColumns];
+        parse_testSet();
+//        printData_testSet();
+
         UpdateData updateData_testSet = new UpdateData(data_testSet, numRows_testSet, numColumns_testSet);
-        data_testSet = updateData.update();
-//        printData();
+        data_testSet = updateData_testSet.update();
+        printData_testSet();
 
         DecisionTree decisionTree = new DecisionTree();
-//        for (int i = 1; i < numRows; i++) {
-        for (int i = 1; i < 135; i++) {
+        for (int i = 1; i < numRows; i++) {
+//        for (int i = 1; i < 135; i++) { // for when part of training set is used as test set
             String[] row = new String[numColumns];
             for (int j = 0; j < numColumns; j++) {
                 row[j] = data[i][j];
@@ -56,7 +58,7 @@ public class Main {
 //        For testing gain scores for top levels
 //         */
 //
-//        clearOutput();
+//        clearGainScoresLog();
 //
 //        TestDecisionTree[] testDecisionTrees = new TestDecisionTree[numColumns - 3];
 //        for (int t = 1; t < testDecisionTrees.length; t++) {
@@ -93,9 +95,12 @@ public class Main {
 //            classifyRow(current_row_index, decisionTree);
 //        }
 
-        for (int currentTestSet_row_index = 1; currentTestSet_row_index < numRows_testSet; currentTestSet_row_index++) {
+        clearOutput();
+
+        for (int currentTestSet_row_index = 0; currentTestSet_row_index < numRows_testSet; currentTestSet_row_index++) {
             classifyRow_testSet(currentTestSet_row_index, decisionTree);
         }
+        System.out.println();
 
 //        System.out.println("Correct responses: " + correctResponses);
 //        System.out.println("Incorrect responses: " + incorrectResponses);
@@ -138,12 +143,21 @@ public class Main {
         Classifier classifier = new Classifier(current_row, numColumns, decisionTree.tree);
 
         System.out.println("Classified0 Result for " + data_testSet[current_row_index][0] + ": " + classifier.getClassified0_result());
-        System.out.println();
 
-        String theoretical = classifier.getClassified0_result();
-        String actual = data_testSet[current_row_index][266];
+        String result2;
+        String result3;
 
-        printOutput(data_testSet[current_row_index][0], classifier.getClassified0_result());
+        if (classifier.getClassified0_result().equals("RESISTANT")) {
+            result2 = "N/A";
+            result3 = "" + 96.30804;
+        }
+        else {
+            result2 = "" + 158.1478261;
+            result3 = "" + 219.3849565;
+        }
+
+        printOutput(data_testSet[current_row_index][0],
+                classifier.getClassified0_result(), result2, result3);
     }
 
     public static void parse() throws IOException {
@@ -192,13 +206,11 @@ public class Main {
         System.out.println();
     }
 
-    public static void clearOutput() {
+    public static void clearGainScoresLog() {
         try {
             BufferedWriter out = new BufferedWriter(
                     new FileWriter("gainScores_level5.txt"));
-
             out.write("");
-
             out.close();
         }
         catch (IOException e) {
@@ -209,9 +221,9 @@ public class Main {
     public static void parse_testSet() throws IOException {
         String line;
         BufferedReader reader = new BufferedReader(new FileReader("STDIN.txt"));
-        reader.readLine(); // skips first line
         for (int i = 0; i < numRows_testSet; i++) {
-            String[] lineArray = reader.readLine().split("\\s+");
+            line = reader.readLine();
+            String[] lineArray = line.split("\\s+");
             for (int j = 0; j < lineArray.length; j++) {
                 data_testSet[i][j] = lineArray[j];
             }
@@ -226,7 +238,7 @@ public class Main {
             numberOfRows_testSet++;
         }
         System.out.println("numberOfRows_testSet: " + numberOfRows_testSet);
-        numberOfRows_testSet = numberOfRows_testSet - 1;
+        numberOfRows_testSet = numberOfRows_testSet;
         return numberOfRows_testSet;
     }
 
@@ -252,21 +264,24 @@ public class Main {
         System.out.println();
     }
 
-    public static void printOutput(String index, String result0) {
-
+    public static void clearOutput() {
         try {
+            BufferedWriter out = new BufferedWriter(
+                    new FileWriter("STDOUT.txt"));
+            out.append("");
+            out.close();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    public static void printOutput(String index, String result0, String result1, String result2) {
+        try {
             BufferedWriter out = new BufferedWriter(
                     new FileWriter("STDOUT.txt", true));
 
-            String output = "";
-
-            if (result0.equals("RESISTANT")) {
-
-                /////
-
-            }
-
+            String output = index + " " + result0 + " " + result1 + " " + result2;
             out.append(output);
             out.newLine();
 
