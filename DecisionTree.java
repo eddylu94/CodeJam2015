@@ -84,7 +84,6 @@ public class DecisionTree {
         }
     }
 
-
     void printTree() {
         Node n = tree;
         System.out.println("Printing tree:");

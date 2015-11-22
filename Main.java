@@ -11,17 +11,33 @@ public class Main {
     private static int correctResponses = 0;
     private static int incorrectResponses = 0;
 
+    private static String[][] data_testSet;
+    private static int numRows_testSet;
+    private static int numColumns_testSet;
+
     public static void main(String[] args) throws IOException {
         numRows = countRows();
         numColumns = countColumns();
+        System.out.println();
+
+        numRows_testSet = countRows_testSet();
+        numColumns_testSet = countColumns_testSet();
         System.out.println();
 
         data = new String[numRows][numColumns];
         parse();
 //        printData();
 
+        data_testSet = new String[numRows][numColumns];
+        parse_testSet();
+//        printData_testSet();
+
         UpdateData updateData = new UpdateData(data, numRows, numColumns);
         data = updateData.update();
+//        printData();
+
+        UpdateData updateData_testSet = new UpdateData(data_testSet, numRows_testSet, numColumns_testSet);
+        data_testSet = updateData.update();
 //        printData();
 
         DecisionTree decisionTree = new DecisionTree();
@@ -69,15 +85,23 @@ public class Main {
 //            }
 //        }
 
-        for (int current_row_index = 135; current_row_index < 160; current_row_index++) {
-            classifyRow(current_row_index, decisionTree);
+        /*
+        For testing classifier by using part of training set as test set
+         */
+
+//        for (int current_row_index = 150; current_row_index < numRows; current_row_index++) {
+//            classifyRow(current_row_index, decisionTree);
+//        }
+
+        for (int currentTestSet_row_index = 1; currentTestSet_row_index < numRows_testSet; currentTestSet_row_index++) {
+            classifyRow_testSet(currentTestSet_row_index, decisionTree);
         }
 
-        System.out.println("Correct responses: " + correctResponses);
-        System.out.println("Incorrect responses: " + incorrectResponses);
-        System.out.printf("Classifier accuracy: %.2f %%",
-                (double) correctResponses / (double) (correctResponses + incorrectResponses) * 100);
-        System.out.println();
+//        System.out.println("Correct responses: " + correctResponses);
+//        System.out.println("Incorrect responses: " + incorrectResponses);
+//        System.out.printf("Classifier accuracy: %.2f %%",
+//                (double) correctResponses / (double) (correctResponses + incorrectResponses) * 100);
+//        System.out.println();
     }
 
     public static void classifyRow(int current_row_index, DecisionTree decisionTree) {
@@ -104,6 +128,22 @@ public class Main {
 
 //        System.out.println("Classifying for " + data[current_row_index][0] + ": " + correct);
 //        System.out.println();
+    }
+
+    public static void classifyRow_testSet(int current_row_index, DecisionTree decisionTree) {
+        String[] current_row = new String[numColumns_testSet];
+        for (int a = 0; a < numColumns_testSet; a++) {
+            current_row[a] = data_testSet[current_row_index][a];
+        }
+        Classifier classifier = new Classifier(current_row, numColumns, decisionTree.tree);
+
+        System.out.println("Classified0 Result for " + data_testSet[current_row_index][0] + ": " + classifier.getClassified0_result());
+        System.out.println();
+
+        String theoretical = classifier.getClassified0_result();
+        String actual = data_testSet[current_row_index][266];
+
+        printOutput(data_testSet[current_row_index][0], classifier.getClassified0_result());
     }
 
     public static void parse() throws IOException {
@@ -165,4 +205,76 @@ public class Main {
             e.printStackTrace();
         }
     }
+
+    public static void parse_testSet() throws IOException {
+        String line;
+        BufferedReader reader = new BufferedReader(new FileReader("STDIN.txt"));
+        reader.readLine(); // skips first line
+        for (int i = 0; i < numRows_testSet; i++) {
+            String[] lineArray = reader.readLine().split("\\s+");
+            for (int j = 0; j < lineArray.length; j++) {
+                data_testSet[i][j] = lineArray[j];
+            }
+        }
+    }
+
+    public static int countRows_testSet() throws IOException {
+        BufferedReader prereader = new BufferedReader(new FileReader("STDIN.txt"));
+        String line;
+        int numberOfRows_testSet = 0;
+        while ((line = prereader.readLine()) != null) {
+            numberOfRows_testSet++;
+        }
+        System.out.println("numberOfRows_testSet: " + numberOfRows_testSet);
+        numberOfRows_testSet = numberOfRows_testSet - 1;
+        return numberOfRows_testSet;
+    }
+
+    public static int countColumns_testSet() throws IOException {
+        BufferedReader prereader = new BufferedReader(new FileReader("STDIN.txt"));
+        String line;
+        int numberOfColumns_testSet = 0;
+        line = prereader.readLine();
+        line = prereader.readLine();
+        String[] lineArray = line.split("\\s+");
+        numberOfColumns_testSet = lineArray.length;
+        System.out.println("numberOfColumns_testSet: " + numberOfColumns_testSet);
+        return numberOfColumns_testSet;
+    }
+
+    public static void printData_testSet() {
+        for (int i = 0; i < numRows_testSet; i++) {
+            for (int j = 0; j < numColumns_testSet; j++) {
+                System.out.print(data_testSet[i][j] + " ");
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+
+    public static void printOutput(String index, String result0) {
+
+        try {
+
+            BufferedWriter out = new BufferedWriter(
+                    new FileWriter("STDOUT.txt", true));
+
+            String output = "";
+
+            if (result0.equals("RESISTANT")) {
+
+                /////
+
+            }
+
+            out.append(output);
+            out.newLine();
+
+            out.close();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
