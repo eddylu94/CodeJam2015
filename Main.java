@@ -18,6 +18,10 @@ public class Main {
     private static String inputPath;
 
     public static void main(String[] args) throws IOException {
+
+//        inputPath = "STDIN.txt";
+        inputPath = args[0];
+
         numRows = countRows();
         numColumns = countColumns();
         System.out.println();
@@ -220,7 +224,7 @@ public class Main {
 
     public static void parse_testSet() throws IOException {
         String line;
-        BufferedReader reader = new BufferedReader(new FileReader("STDIN.txt"));
+        BufferedReader reader = new BufferedReader(new FileReader(inputPath));
         for (int i = 0; i < numRows_testSet; i++) {
             line = reader.readLine();
             String[] lineArray = line.split("\\s+");
@@ -231,7 +235,7 @@ public class Main {
     }
 
     public static int countRows_testSet() throws IOException {
-        BufferedReader prereader = new BufferedReader(new FileReader("STDIN.txt"));
+        BufferedReader prereader = new BufferedReader(new FileReader(inputPath));
         String line;
         int numberOfRows_testSet = 0;
         while ((line = prereader.readLine()) != null) {
@@ -243,7 +247,7 @@ public class Main {
     }
 
     public static int countColumns_testSet() throws IOException {
-        BufferedReader prereader = new BufferedReader(new FileReader("STDIN.txt"));
+        BufferedReader prereader = new BufferedReader(new FileReader(inputPath));
         String line;
         int numberOfColumns_testSet = 0;
         line = prereader.readLine();
