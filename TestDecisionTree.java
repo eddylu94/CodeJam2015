@@ -76,11 +76,11 @@ public class TestDecisionTree {
             double current_gainScore = calculateGainScore(calculateGain(n, n.left, n.right));
             System.out.printf("   %.0f", current_gainScore);
 
-            if (level == 0) {
+            if (level == 1) {
                 try {
 
                     BufferedWriter out = new BufferedWriter(
-                            new FileWriter("gainScores_level0.txt", true));
+                            new FileWriter("gainScores_level1.txt", true));
 
                     String output = column_assignment + " "
                             + (int)current_gainScore;

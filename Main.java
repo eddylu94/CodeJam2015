@@ -145,7 +145,7 @@ public class Main {
     public static void clearOutput() {
         try {
             BufferedWriter out = new BufferedWriter(
-                    new FileWriter("gainScores_level0.txt"));
+                    new FileWriter("gainScores_level1.txt"));
 
             out.write("");
 
