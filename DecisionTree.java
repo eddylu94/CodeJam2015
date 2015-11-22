@@ -58,13 +58,17 @@ public class DecisionTree {
         for (int i = 0; i < level; i++) {
             System.out.print("---");
         }
-        System.out.println(n.RESISTANT_counter + "," + n.COMPLETE_REMISSION_counter
-            + "   " + calculateEntropy(n.RESISTANT_counter, n.COMPLETE_REMISSION_counter));
+        System.out.print(n.RESISTANT_counter + "," + n.COMPLETE_REMISSION_counter);
+        System.out.printf("   %.3f", calculateEntropy(n.RESISTANT_counter, n.COMPLETE_REMISSION_counter));
 
         // stop printing to reduce execution time during testing
         if (level == 8) {
+            System.out.println();
             return;
         }
+
+        System.out.printf("   %.0f", calculateGainScore(calculateGain(n, n.left, n.right)));
+        System.out.println();
 
         if (n.ifLeftPresent() && n.ifRightPresent()) {
             printLevel(n.left, level + 1);
@@ -78,10 +82,43 @@ public class DecisionTree {
         }
     }
 
+    public static double calculateGainScore(double gain) {
+        return gain * 1000000;
+    }
+
+    public static double calculateGain(Node parent, Node left, Node right) {
+
+        if (left == null || right == null) {
+            return 0;
+        }
+
+        double gain;
+
+        double entropyParent = calculateEntropy(parent);
+        double entropyLeft = calculateEntropy(left);
+        double entropyRight = calculateEntropy(right);
+
+//        System.out.println();
+//        System.out.println("calculateEntropy(parent): " + calculateEntropy(parent));
+//        System.out.println("calculateEntropy(left): " + calculateEntropy(left));
+//        System.out.println("calculateEntropy(right): " + calculateEntropy(right));
+
+        int sumParent = parent.RESISTANT_counter + parent.COMPLETE_REMISSION_counter;
+        int sumLeft = left.RESISTANT_counter + left.COMPLETE_REMISSION_counter;
+        int sumRight = right.RESISTANT_counter + right.COMPLETE_REMISSION_counter;
+
+        gain = entropyParent - (double)sumLeft / (double)sumParent * entropyLeft - (double)sumRight / (double)sumParent * entropyRight;
+
+        return gain;
+    }
+
     public static double calculateEntropy(double a, double b) {
         double frac1 = a / (a + b);
         double frac2 = b / (a + b);
-        return - frac1 * log_base2(frac1) - frac2 * log_base2(frac2);
+        if (a != 0 && b != 0) {
+            return - frac1 * log_base2(frac1) - frac2 * log_base2(frac2);
+        }
+        return 0;
     }
 
     public static double calculateEntropy(Node n) {
@@ -89,7 +126,10 @@ public class DecisionTree {
         double b = n.COMPLETE_REMISSION_counter;
         double frac1 = a / (a + b);
         double frac2 = b / (a + b);
-        return - frac1 * log_base2(frac1) - frac2 * log_base2(frac2);
+        if (a != 0 && b != 0) {
+            return - frac1 * log_base2(frac1) - frac2 * log_base2(frac2);
+        }
+        return 0;
     }
 
     public static double log_base2(double n) {

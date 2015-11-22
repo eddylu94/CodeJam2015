@@ -10,6 +10,9 @@ public class Main {
     private static int numRows;
     private static int numColumns;
 
+    private static int correctResponses = 0;
+    private static int incorrectResponses = 0;
+
     public static void main(String[] args) throws IOException {
         numRows = countRows();
         numColumns = countColumns();
@@ -25,20 +28,24 @@ public class Main {
 
         DecisionTree decisionTree = new DecisionTree();
 //        for (int i = 1; i < numRows; i++) {
-        for (int i = 1; i < 80; i++) {
+        for (int i = 1; i < 100; i++) {
             String[] row = new String[numColumns];
             for (int j = 0; j < numColumns; j++) {
                 row[j] = data[i][j];
             }
             decisionTree.addRow(row);
-            System.out.println("Trained: " + row[0]);
         }
         decisionTree.printTree();
 
-        for (int current_row_index = 80; current_row_index < 150; current_row_index++) {
+        for (int current_row_index = 100; current_row_index < numRows - 1; current_row_index++) {
             classifyRow(current_row_index, decisionTree);
         }
 
+        System.out.println("Correct responses: " + correctResponses);
+        System.out.println("Incorrect responses: " + incorrectResponses);
+        System.out.printf("Classifier accuracy: %.2f %%",
+                (double)correctResponses / (double)(correctResponses + incorrectResponses) * 100);
+        System.out.println();
     }
 
     public static void classifyRow(int current_row_index, DecisionTree decisionTree) {
@@ -54,6 +61,13 @@ public class Main {
         String theoretical = classifier.getClassified0_result();
         String actual = data[current_row_index][266];
         boolean correct = theoretical.equals(actual);
+
+        if (correct) {
+            correctResponses++;
+        }
+        else {
+            incorrectResponses++;
+        }
 
         System.out.println("Classifying for " + data[current_row_index][0] + ": " + correct);
         System.out.println();
