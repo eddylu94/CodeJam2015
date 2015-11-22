@@ -17,10 +17,10 @@ public class Main {
 
     private static String inputPath;
 
-    public static void main(String[] args) throws IOException {
+    public Main(String path) throws IOException {
 
 //        inputPath = "STDIN.txt";
-        inputPath = args[0];
+        inputPath = path;
 
         numRows = countRows();
         numColumns = countColumns();
@@ -44,7 +44,7 @@ public class Main {
 
         UpdateData updateData_testSet = new UpdateData(data_testSet, numRows_testSet, numColumns_testSet);
         data_testSet = updateData_testSet.update();
-        printData_testSet();
+//        printData_testSet();
 
         DecisionTree decisionTree = new DecisionTree();
         for (int i = 1; i < numRows; i++) {
@@ -98,6 +98,11 @@ public class Main {
 //        for (int current_row_index = 150; current_row_index < numRows; current_row_index++) {
 //            classifyRow(current_row_index, decisionTree);
 //        }
+
+        System.out.println();
+
+        System.out.println("Output to STDOUT.txt:");
+        System.out.println();
 
         clearOutput();
 
