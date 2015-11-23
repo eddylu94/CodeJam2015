@@ -8,6 +8,10 @@ public class Node {
     Node left;
     Node right;
 
+    /*
+    Checks if there is a left child node
+    @return if left child node exists
+     */
     public boolean ifLeftPresent() {
         if (this.left == null) {
             return false;
@@ -15,6 +19,10 @@ public class Node {
         return true;
     }
 
+    /*
+    Checks if there is a right child node
+    @return if right child node exists
+     */
     public boolean ifRightPresent() {
         if (this.right == null) {
             return false;
@@ -22,14 +30,25 @@ public class Node {
         return true;
     }
 
+    /*
+    Adds left child node
+    @param n    node that will have child node added to it
+     */
     public void addLeftNode(Node n) {
         this.left = n;
     }
 
+    /*
+    Adds right child node
+    @param n    node that will have child node added to it
+     */
     public void addRightNode(Node n) {
         this.right = n;
     }
 
+    /*
+    Prints full decision tree
+     */
     void printTree() {
         Node n = this;
         System.out.println("Printing tree:");
@@ -38,6 +57,11 @@ public class Node {
         System.out.println();
     }
 
+    /*
+    Prints information in regards to specific node at certain level of decision tree
+    @param n        current Node
+    @param level    current level
+     */
     void printLevel(Node n, int level) {
         for (int i = 0; i < level; i++) {
             System.out.print("---");
@@ -62,12 +86,24 @@ public class Node {
         }
     }
 
+    /*
+    Calculate entropy based on distribution of outcome at current node
+    Calculates based on given distributions of child nodes
+    @param  a   distribution of one child node outcome
+    @param  b   distribution of other child node outcome
+    @return     entropy
+     */
     public static double calculateEntropy(double a, double b) {
         double frac1 = a / (a + b);
         double frac2 = b / (a + b);
         return - frac1 * log_base2(frac1) - frac2 * log_base2(frac2);
     }
 
+    /*
+    Determines log_2(n)
+    @param  n       n in equation
+    @return         log_2(n)
+     */
     public static double log_base2(double n) {
         return Math.log(n) / Math.log(2);
     }

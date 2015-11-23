@@ -28,10 +28,19 @@ public class Classifier {
         classify(row);
     }
 
+    /*
+    Classifies row of data
+    @param  row     row of data array
+     */
     public static void classify(String[] row) {
         classify_iterateNextNode(row, trained_decisionTree, 183);
     }
 
+    /*
+    Iterates through decision tree while iterating through columns of row of data
+    Updates entropies and gain scores
+    @param  row     row of data array
+     */
     public static void classify_iterateNextNode(String[] row, Node n, int column) {
         if (column < 266 - 3) {
 
@@ -67,6 +76,13 @@ public class Classifier {
         }
     }
 
+    /*
+    Calculates gain from entropy of current node and its child nodes
+    @param  parent   current node
+    @param  left     left child node of current node
+    @param  right    right child node of current node
+    @return          gain
+     */
     public static double calculateGain(Node parent, Node left, Node right) {
 
         if (left == null || right == null) {
@@ -88,16 +104,34 @@ public class Classifier {
         return gain;
     }
 
+    /*
+    Calculates gain score based on calculated gain
+    @param  gain    gain calculated from entropy of current node and its child nodes
+    @return         gain score
+     */
     public static double calculateGainScore(double gain) {
         return gain * 1000000;
     }
 
+    /*
+    Calculate entropy based on distribution of outcome at current node
+    Calculates based on given distributions of child nodes
+    @param  a   distribution of one child node outcome
+    @param  b   distribution of other child node outcome
+    @return     entropy
+     */
     public static double calculateEntropy(double a, double b) {
         double frac1 = a / (a + b);
         double frac2 = b / (a + b);
         return - frac1 * log_base2(frac1) - frac2 * log_base2(frac2);
     }
 
+    /*
+    Calculate entropy based on distribution of outcome at current node
+    Calculates based on given node
+    @param  n   current node
+    @return     entropy
+     */
     public static double calculateEntropy(Node n) {
         double a = n.RESISTANT_counter;
         double b = n.COMPLETE_REMISSION_counter;
@@ -106,10 +140,20 @@ public class Classifier {
         return - frac1 * log_base2(frac1) - frac2 * log_base2(frac2);
     }
 
+    /*
+    Determines log_2(n)
+    @param  n       n in equation
+    @return         log_2(n)
+     */
     public static double log_base2(double n) {
         return Math.log(n) / Math.log(2);
     }
 
+    /*
+    Determines whether "RESISTANT" or "COMPLETE_REMISSION" occurs most frequently at particular node
+    @param  n   current node
+    @return     most frequent String
+     */
     public static String checkHighestFrequency(Node n) {
         String current_classfied0;
         if (n.RESISTANT_counter > n.COMPLETE_REMISSION_counter) {
@@ -121,6 +165,10 @@ public class Classifier {
         return current_classfied0;
     }
 
+    /*
+    Determines classified result for row of data when reaching last node
+    @param  n   current node
+     */
     public static void determineResult(Node n) {
 
 //        Collections.sort(visited_entropies);
@@ -141,10 +189,20 @@ public class Classifier {
 
     }
 
+    /*
+    Returns first classified result
+    @return     classified result
+     */
     public static String getClassified0_result() {
         return classified0_result;
     }
 
+    /*
+    Determines next column that should be used for next level in decision tree
+    Values are determined from gain score tests
+    @param  n   current column index
+    @return     next column index
+     */
     public static int nextColumn(int n) {
         if (n == 183) {
             return 30;

@@ -8,11 +8,21 @@ public class DecisionTree {
         tree = new Node();
     }
 
+    /*
+    Add new row of data from data array to decision tree
+    @param  row     new row of data to be added to decision tree
+     */
     void addRow(String[] row) {
         Node n = tree;
         iterate(row, n, 183);
     }
 
+    /*
+    Adds counter values to a node in decision tree
+    @param  row     new row of data to be added to decision tree
+    @param  n       current node
+    @param  column  specific column index in row of data
+     */
     void iterate(String[] row, Node n, int column) {
 
         if (row[266].equals("RESISTANT")) {
@@ -27,6 +37,12 @@ public class DecisionTree {
         iterateNextNode(row, n, column);
     }
 
+    /*
+    Traverses to next child node, or adds node if child node does not exist
+    @param  row     new row of data to be added to decision tree
+    @param  n       current node
+    @param  column  specific column index in row of data
+     */
     void iterateNextNode(String[] row, Node n, int column) {
         if (column < 266) {
             if (row[column].equals("0")) {
@@ -46,6 +62,11 @@ public class DecisionTree {
         }
     }
 
+    /*
+    Prints part of decision tree from root
+    Only part of tree is printed to save running time
+    @param limit    limit of number of levels to be printed
+     */
     void printPartialTree(int limit) {
         Node n = tree;
         System.out.println("Printing tree:");
@@ -54,6 +75,12 @@ public class DecisionTree {
         System.out.println();
     }
 
+    /*
+    Prints information in regards to specific node at certain level of decision tree
+    @param n        current Node
+    @param level    current level
+    @param limit    limit that stops printing execution if reached by level value
+     */
     void printPartialTreeLevel(Node n, int level, int limit) {
         if (level < limit) {
             for (int i = 0; i < level; i++) {
@@ -84,6 +111,9 @@ public class DecisionTree {
         }
     }
 
+    /*
+    Prints full decision tree
+     */
     void printTree() {
         Node n = tree;
         System.out.println("Printing tree:");
@@ -92,6 +122,11 @@ public class DecisionTree {
         System.out.println();
     }
 
+    /*
+    Prints information in regards to specific node at certain level of decision tree
+    @param n        current Node
+    @param level    current level
+     */
     void printLevel(Node n, int level) {
         for (int i = 0; i < level; i++) {
             System.out.print("---");
@@ -120,10 +155,22 @@ public class DecisionTree {
         }
     }
 
+    /*
+    Calculates gain score based on calculated gain
+    @param  gain    gain calculated from entropy of current node and its child nodes
+    @return         gain score
+     */
     public static double calculateGainScore(double gain) {
         return gain * 1000000;
     }
 
+    /*
+    Calculates gain from entropy of current node and its child nodes
+    @param  parent   current node
+    @param  left     left child node of current node
+    @param  right    right child node of current node
+    @return          gain
+     */
     public static double calculateGain(Node parent, Node left, Node right) {
 
         if (left == null || right == null) {
@@ -150,6 +197,13 @@ public class DecisionTree {
         return gain;
     }
 
+    /*
+    Calculate entropy based on distribution of outcome at current node
+    Calculates based on given distributions of child nodes
+    @param  a   distribution of one child node outcome
+    @param  b   distribution of other child node outcome
+    @return     entropy
+     */
     public static double calculateEntropy(double a, double b) {
         double frac1 = a / (a + b);
         double frac2 = b / (a + b);
@@ -159,6 +213,12 @@ public class DecisionTree {
         return 0;
     }
 
+    /*
+    Calculate entropy based on distribution of outcome at current node
+    Calculates based on given node
+    @param  n   current node
+    @return     entropy
+     */
     public static double calculateEntropy(Node n) {
         double a = n.RESISTANT_counter;
         double b = n.COMPLETE_REMISSION_counter;
@@ -170,10 +230,21 @@ public class DecisionTree {
         return 0;
     }
 
+    /*
+    Determines log_2(n)
+    @param  n       n in equation
+    @return         log_2(n)
+     */
     public static double log_base2(double n) {
         return Math.log(n) / Math.log(2);
     }
 
+    /*
+    Determines next column that should be used for next level in decision tree
+    Values are determined from gain score tests
+    @param  n   current column index
+    @return     next column index
+     */
     public static int nextColumn(int n) {
         if (n == 183) {
             return 30;

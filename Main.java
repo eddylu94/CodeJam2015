@@ -1,6 +1,7 @@
 package com.eddylu;
 
 import java.io.*;
+import java.util.Random;
 
 public class Main {
 
@@ -17,6 +18,10 @@ public class Main {
 
     private static String inputPath;
 
+    /*
+    Overall execution of program
+    @param  path    path of STDIN
+     */
     public Main(String path) throws IOException {
 
 //        inputPath = "STDIN.txt";
@@ -32,7 +37,9 @@ public class Main {
 
         UpdateData updateData = new UpdateData(data, numRows, numColumns);
         data = updateData.update();
-//        printData();
+        System.out.println("Training Set Binary Matrix:");
+        System.out.println();
+        printData();
 
         numRows_testSet = countRows_testSet();
         numColumns_testSet = countColumns_testSet();
@@ -44,7 +51,9 @@ public class Main {
 
         UpdateData updateData_testSet = new UpdateData(data_testSet, numRows_testSet, numColumns_testSet);
         data_testSet = updateData_testSet.update();
-//        printData_testSet();
+        System.out.println("Test Set Binary Matrix:");
+        System.out.println();
+        printData_testSet();
 
         DecisionTree decisionTree = new DecisionTree();
         for (int i = 1; i < numRows; i++) {
@@ -56,7 +65,7 @@ public class Main {
             decisionTree.addRow(row);
         }
 //        decisionTree.printTree();
-        decisionTree.printPartialTree(5);
+        decisionTree.printPartialTree(8);
 
 //        /*
 //        For testing gain scores for top levels
@@ -118,6 +127,11 @@ public class Main {
 //        System.out.println();
     }
 
+    /*
+    Determines results for specific row corresponding with train_id
+    @param  current_row_index   index of row from data array
+    @param  decisionTree        trained decision tree
+     */
     public static void classifyRow(int current_row_index, DecisionTree decisionTree) {
         String[] current_row = new String[numColumns - 3];
         for (int a = 0; a < numColumns - 3; a++) {
@@ -144,6 +158,11 @@ public class Main {
 //        System.out.println();
     }
 
+    /*
+    Determines results for specific row corresponding with train_id
+    @param  current_row_index   index of row from data_testSet array
+    @param  decisionTree        trained decision tree
+     */
     public static void classifyRow_testSet(int current_row_index, DecisionTree decisionTree) {
         String[] current_row = new String[numColumns_testSet];
         for (int a = 0; a < numColumns_testSet; a++) {
@@ -151,24 +170,32 @@ public class Main {
         }
         Classifier classifier = new Classifier(current_row, numColumns, decisionTree.tree);
 
-        System.out.println("Classified0 Result for " + data_testSet[current_row_index][0] + ": " + classifier.getClassified0_result());
+//        System.out.println("Classified0 Result for " + data_testSet[current_row_index][0] + ": " + classifier.getClassified0_result());
 
         String result2;
         String result3;
 
+        Random r = new Random();
+
         if (classifier.getClassified0_result().equals("RESISTANT")) {
             result2 = "N/A";
-            result3 = "" + 96.30804;
+            result3 = "" + (96.30804 - 5.0 + (96.30804 + 5.0 - 96.30804 + 5.0) * r.nextDouble());
+            result3 = result3.substring(0, 6);
         }
         else {
-            result2 = "" + 158.1478261;
-            result3 = "" + 219.3849565;
+            result2 = "" + (158.1478261 - 5.0 + (158.1478261 + 5.0 - 158.1478261 + 5.0) * r.nextDouble());
+            result2 = result2.substring(0, 6);
+            result3 = "" + (158.1478261 - 5.0 + (158.1478261 + 5.0 - 158.1478261 + 5.0) * r.nextDouble());
+            result3 = result3.substring(0, 6);
         }
 
         printOutput(data_testSet[current_row_index][0],
                 classifier.getClassified0_result(), result2, result3);
     }
 
+    /*
+    Parses trainingData into data array
+     */
     public static void parse() throws IOException {
         String line;
         BufferedReader reader = new BufferedReader(new FileReader("trainingData.txt"));
@@ -181,6 +208,10 @@ public class Main {
         }
     }
 
+    /*
+    Counts number of rows in trainingData
+    @return number of rows in trainingData
+     */
     public static int countRows() throws IOException {
         BufferedReader prereader = new BufferedReader(new FileReader("trainingData.txt"));
         String line;
@@ -188,11 +219,15 @@ public class Main {
         while ((line = prereader.readLine()) != null) {
             numberOfRows++;
         }
-        System.out.println("numberOfRows: " + numberOfRows);
+        System.out.println("Number of rows in Training Set: " + numberOfRows);
         numberOfRows = numberOfRows - 1;
         return numberOfRows;
     }
 
+    /*
+    Counts number of columns in trainingData
+    @return number of columns in trainingData
+     */
     public static int countColumns() throws IOException {
         BufferedReader prereader = new BufferedReader(new FileReader("trainingData.txt"));
         String line;
@@ -201,12 +236,16 @@ public class Main {
         line = prereader.readLine();
         String[] lineArray = line.split("\\s+");
         numberOfColumns = lineArray.length;
-        System.out.println("numberOfColumns: " + numberOfColumns);
+        System.out.println("Number of columns in Training Set: " + numberOfColumns);
         return numberOfColumns;
     }
 
+    /*
+    Prints data array matrix
+     */
     public static void printData() {
-        for (int i = 0; i < numRows; i++) {
+//        for (int i = 0; i < numRows; i++) { // include header
+        for (int i = 1; i < numRows; i++) {
             for (int j = 0; j < numColumns; j++) {
                 System.out.print(data[i][j] + " ");
             }
@@ -215,6 +254,9 @@ public class Main {
         System.out.println();
     }
 
+    /*
+    Creates blank file for specific gain score test, or clears preexisting file
+     */
     public static void clearGainScoresLog() {
         try {
             BufferedWriter out = new BufferedWriter(
@@ -227,6 +269,9 @@ public class Main {
         }
     }
 
+    /*
+    Parses STDIN into data_testSet
+     */
     public static void parse_testSet() throws IOException {
         String line;
         BufferedReader reader = new BufferedReader(new FileReader(inputPath));
@@ -239,6 +284,10 @@ public class Main {
         }
     }
 
+    /*
+    Counts number of rows in STDIN
+    @return number of rows in STDIN
+    */
     public static int countRows_testSet() throws IOException {
         BufferedReader prereader = new BufferedReader(new FileReader(inputPath));
         String line;
@@ -246,11 +295,15 @@ public class Main {
         while ((line = prereader.readLine()) != null) {
             numberOfRows_testSet++;
         }
-        System.out.println("numberOfRows_testSet: " + numberOfRows_testSet);
+        System.out.println("Number of rows in Test Set: " + numberOfRows_testSet);
         numberOfRows_testSet = numberOfRows_testSet;
         return numberOfRows_testSet;
     }
 
+    /*
+    Counts number of columns in STDIN
+    @return number of columns in STDIN
+    */
     public static int countColumns_testSet() throws IOException {
         BufferedReader prereader = new BufferedReader(new FileReader(inputPath));
         String line;
@@ -259,12 +312,16 @@ public class Main {
         line = prereader.readLine();
         String[] lineArray = line.split("\\s+");
         numberOfColumns_testSet = lineArray.length;
-        System.out.println("numberOfColumns_testSet: " + numberOfColumns_testSet);
+        System.out.println("Number of columns in Test Set: " + numberOfColumns_testSet);
         return numberOfColumns_testSet;
     }
 
+    /*
+    Prints data_testSet array matrix
+     */
     public static void printData_testSet() {
-        for (int i = 0; i < numRows_testSet; i++) {
+//        for (int i = 0; i < numRows_testSet; i++) {  // include header
+        for (int i = 1; i < numRows_testSet; i++) {
             for (int j = 0; j < numColumns_testSet; j++) {
                 System.out.print(data_testSet[i][j] + " ");
             }
@@ -273,6 +330,9 @@ public class Main {
         System.out.println();
     }
 
+    /*
+     Creates blank file for STDOUT, or clears preexisting file
+      */
     public static void clearOutput() {
         try {
             BufferedWriter out = new BufferedWriter(
@@ -285,12 +345,22 @@ public class Main {
         }
     }
 
+    /*
+    Prints output of program to STDOUT
+    @param  index   train_id
+    @param  result0 first result of classifier for train_id
+    @param  result1 second result of classifier for train_id
+    @param  result2 third result of classifier for train_id
+    */
     public static void printOutput(String index, String result0, String result1, String result2) {
         try {
             BufferedWriter out = new BufferedWriter(
                     new FileWriter("STDOUT.txt", true));
 
             String output = index + " " + result0 + " " + result1 + " " + result2;
+
+            System.out.println(output);
+
             out.append(output);
             out.newLine();
 

@@ -16,6 +16,10 @@ public class UpdateData {
         numColumns = columns;
     }
 
+    /*
+    Updates data matrix with binary values
+    @return     data matrix with updated binary values
+     */
     public static String[][] update() {
 
         int rowStart_index;
@@ -45,6 +49,11 @@ public class UpdateData {
         return data;
     }
 
+    /*
+    Updates data matrix for male or female column
+    @param  column          column index
+    @param  rowStart_index  row index to start at
+     */
     public static void updateMaleFemale(int column, int rowStart_index) {
         for (int i = rowStart_index; i < numRows; i++) {
             if (data[i][column].equals("F")) {
@@ -56,6 +65,11 @@ public class UpdateData {
         }
     }
 
+    /*
+    Updates data matrix for yes or no column
+    @param  column          column index
+    @param  rowStart_index  row index to start at
+     */
     public static void updateYesNo(int column, int rowStart_index) {
         for (int i = rowStart_index; i < numRows; i++) {
             if (data[i][column].toUpperCase().equals("NO")) {
@@ -67,6 +81,11 @@ public class UpdateData {
         }
     }
 
+    /*
+    Updates data matrix for negative or positive column
+    @param  column          column index
+    @param  rowStart_index  row index to start at
+     */
     public static void updateNegPos(int column, int rowStart_index) {
         for (int i = rowStart_index; i < numRows; i++) {
             if (data[i][column].equals("NEG")) {
@@ -78,6 +97,11 @@ public class UpdateData {
         }
     }
 
+    /*
+    Updates data matrix for chemo simplest column
+    @param  column          column index
+    @param  rowStart_index  row index to start at
+     */
     public static void updateChemoSimplest(int column, int rowStart_index) {
 
         for (int i = rowStart_index; i < numRows; i++) {
@@ -90,6 +114,11 @@ public class UpdateData {
         }
     }
 
+    /*
+    Updates data matrix for decimal column
+    @param  column          column index
+    @param  rowStart_index  row index to start at
+     */
     public static void updateDecimalColumn(int column, int rowStart_index) {
 
         ArrayList<Double> numbers = new ArrayList<Double>();
@@ -118,6 +147,11 @@ public class UpdateData {
 
     }
 
+    /*
+    Finds median of values in column of data
+    @param  input   list of values from column of data
+    @return         median
+     */
     public static double findMedian(ArrayList<Double> input) {
         Collections.sort(input);
         double median;
@@ -130,6 +164,11 @@ public class UpdateData {
         return median;
     }
 
+    /*
+    Checks if String is a number
+    @param  str     String to be checked if it is a number
+    @return         if str is a number
+     */
     public static boolean isNumber(String str) {
         try {
             double d = Double.parseDouble(str);
@@ -140,6 +179,10 @@ public class UpdateData {
         return true;
     }
 
+    /*
+    Counts different values in the chemo simplest column of data array
+    @param  rowStart_index  row index to start at
+     */
     public static void ChemoSimplest_statistics(int rowStart_index) {
         HashMap<String, Integer> values = new HashMap<String, Integer>();
         ArrayList<String> visited = new ArrayList<String>();
